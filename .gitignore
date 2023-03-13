@@ -1,2 +1,6 @@
 # Project exclude paths
 /out/
+.idea
+ejercicios-semana-18.iml
+escritura*
+lectura*
