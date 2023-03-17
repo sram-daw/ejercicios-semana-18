@@ -9,11 +9,11 @@ public class IOFicheros<Obj> {
     }
 
     //Ejercicio 1
-    public boolean EscribirCaracteres(String texto) {
+    public boolean escribirCaracteres(String texto) {
         boolean isEscrituraOk = false;
         FileWriter escrituraCaracteres;
         try {
-            escrituraCaracteres = new FileWriter("escritura_caracteres.txt");
+            escrituraCaracteres = new FileWriter("escritura.txt");
             escrituraCaracteres.write(texto);
             escrituraCaracteres.close();
             isEscrituraOk = true;
@@ -25,7 +25,7 @@ public class IOFicheros<Obj> {
     }
 
     //Ejercicio 2
-    public char LeerCaracteres(String fichero) {
+    public char leerCaracteres(String fichero) {
         FileReader lectorCaracteres;
         int caracter = 0;
         char contenidoFichero = 0;
@@ -37,8 +37,10 @@ public class IOFicheros<Obj> {
                 System.out.print(contenidoFichero);
                 caracter = lectorCaracteres.read();
             }
+            System.out.println("");
             lectorCaracteres.close();
         } catch (IOException e) {
+            System.out.println("Ha ocurrido un error.");
             e.printStackTrace();
         }
         return contenidoFichero;
@@ -112,7 +114,7 @@ public class IOFicheros<Obj> {
     }
 
     //Ejercicio 5
-    public boolean leerObjeto(String fichero) { //modificar para que lea todos los objetos del fichero (si hay varios, ahora solo lee el primero)
+    public boolean leerObjeto(String fichero) {
         FileInputStream lecturaBytes;
         ObjectInputStream lecturaObjetos;
         Obj objeto;
@@ -120,12 +122,18 @@ public class IOFicheros<Obj> {
         try {
             lecturaBytes = new FileInputStream(fichero);
             lecturaObjetos = new ObjectInputStream(lecturaBytes);
-            objeto = (Obj) lecturaObjetos.readObject();
-            System.out.println(objeto.toString());
+
+        /*se leen los objetos hasta que la lectura sea null, es decir, hasta que ya no existan más.
+         Esta es una forma de leer todos los objetos del archivo. Otra es la del ejercicio 7, que utiliza un arraylist*/
+            while ((objeto = (Obj) lecturaObjetos.readObject()) != null) {
+                System.out.println(objeto.toString());
+            }
             lecturaObjetos.close();
             lecturaBytes.close();
             isLecturaOk = true;
-
+        } catch (EOFException e) {
+            // Cuando llega al final del archivo, se lanza una excepción EOF y se ignora
+            isLecturaOk = true;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             isLecturaOk = false;
@@ -138,7 +146,7 @@ public class IOFicheros<Obj> {
         FileOutputStream escrituraBytes;
         ObjectOutputStream escrituraObjetos;
         boolean isEscrituraOk = false;
-
+        Obj objeto;
         try {
             // Se abre el FileOutputStream y el ObjectOutputStream una sola vez
             escrituraBytes = new FileOutputStream(fichero, isAdd);
@@ -146,21 +154,46 @@ public class IOFicheros<Obj> {
 
             // Escribe cada objeto
             for (int i = 0; i < lista.size(); i++) {
-                Object objeto = lista.get(i);
-                if (objeto instanceof Perro) {
-                    escrituraObjetos.writeObject(objeto);
-                    escrituraObjetos.reset(); // se utiliza para limpiar el caché interno del ObjectOutputStream de objetos previamente escritos y para restablecer la información de encabezado del objeto. Asegura que cada vez se escribe un objeto distinto.
-                }
+                objeto = (Obj) lista.get(i);
+                escrituraObjetos.writeObject(objeto);
             }
+
             escrituraObjetos.close();
             escrituraBytes.close();
+
             isEscrituraOk = true;
         } catch (IOException e) {
             e.printStackTrace();
             isEscrituraOk = false;
         }
-
         return isEscrituraOk;
+    }
+
+    //Ejercicio 7
+    public ArrayList<Obj> lecturaObjetosLista(String fichero) {
+        ArrayList<Obj> listaObjetos = new ArrayList<>();
+        FileInputStream lecturaBytes;
+        ObjectInputStream lecturaObjetos;
+        Obj objeto;
+        try {
+            lecturaBytes = new FileInputStream(fichero);
+            lecturaObjetos = new ObjectInputStream(lecturaBytes);
+
+            while ((objeto = (Obj) lecturaObjetos.readObject()) != null) {
+                listaObjetos.add(objeto); //los objetos se van almacenando en el arraylist
+                System.out.println(objeto.toString());
+            }
+            lecturaObjetos.close();
+            lecturaBytes.close();
+
+        } catch (EOFException e) {
+            // Cuando llega al final del archivo, se lanza una excepción EOF y se ignora
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Ha ocurrido un error.");
+            e.printStackTrace();
+        }
+        return listaObjetos;
     }
 
 
