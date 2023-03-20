@@ -25,15 +25,19 @@ public class IOFicheros<Obj> {
     }
 
     //Ejercicio 2
-    public char leerCaracteres(String fichero) {
+    public String leerCaracteres(String fichero) {
         FileReader lectorCaracteres;
         int caracter = 0;
         char contenidoFichero = 0;
+        ArrayList<Character> listaChars = new ArrayList<Character>();
+        String textoCompleto = "";
         try {
+            //int caracter es igual al código ascii, posteriormente se traduce cuando hacemos (char) caracter y se almacena en contenidoFichero
             lectorCaracteres = new FileReader(fichero);
-            caracter = lectorCaracteres.read();//cuenta los caracteres
+            caracter = lectorCaracteres.read();
             while (caracter != -1) {
                 contenidoFichero = (char) caracter;
+                listaChars.add((char)caracter); //añadimos a la lista el caracter
                 System.out.print(contenidoFichero);
                 caracter = lectorCaracteres.read();
             }
@@ -43,7 +47,13 @@ public class IOFicheros<Obj> {
             System.out.println("Ha ocurrido un error.");
             e.printStackTrace();
         }
-        return contenidoFichero;
+        //se traduce el arraylist de caracteres a string utilizando StringBuilder
+        StringBuilder sb = new StringBuilder();
+        for (Character c : listaChars) {
+            sb.append(c);
+        }
+        textoCompleto = sb.toString();
+        return textoCompleto;
     }
 
     //Ejercicio 3
