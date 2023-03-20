@@ -23,7 +23,9 @@ public class Main {
                     //Ejercicio 1
                     System.out.println("Escriba una frase para guardar en el fichero: ");
                     inputDatos = scannerStr.nextLine();
-                    isExitoEjecucion = inputOutput.escribirCaracteres(inputDatos);
+                    System.out.println("Introduzca una ruta o nombre de fichero para leer: ");
+                    inputFichero = scannerStr.nextLine();
+                    isExitoEjecucion = inputOutput.escribirCaracteres(inputDatos, inputFichero);
                     if (isExitoEjecucion) {
                         System.out.println("La escritura se ha realizado con éxito.");
                     } else {

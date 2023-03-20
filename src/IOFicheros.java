@@ -9,11 +9,11 @@ public class IOFicheros<Obj> {
     }
 
     //Ejercicio 1
-    public boolean escribirCaracteres(String texto) {
+    public boolean escribirCaracteres(String texto, String fichero) {
         boolean isEscrituraOk = false;
         FileWriter escrituraCaracteres;
         try {
-            escrituraCaracteres = new FileWriter("escritura.txt");
+            escrituraCaracteres = new FileWriter(fichero);
             escrituraCaracteres.write(texto);
             escrituraCaracteres.close();
             isEscrituraOk = true;
