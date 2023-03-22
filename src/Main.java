@@ -130,6 +130,7 @@ public class Main {
 
                 case 8:
                     isSalir = true;
+                    break;
             }
 
         }
