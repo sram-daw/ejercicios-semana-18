@@ -1,5 +1,3 @@
-
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -189,7 +187,7 @@ public class IOFicheros<Obj> {
             lecturaBytes = new FileInputStream(fichero);
             lecturaObjetos = new ObjectInputStream(lecturaBytes);
 
-            while ((objeto = (Obj) lecturaObjetos.readObject()) != null) {
+            while ((objeto = (Obj) lecturaObjetos.readObject()) != null) { //se necesita igualar objeto a (Obj) lecturaObjetos... porque si se usa directamente objeto!=null da un error indicando que el objeto puede no estar inicializado
                 listaObjetos.add(objeto); //los objetos se van almacenando en el arraylist
                 System.out.println(objeto.toString());
             }
